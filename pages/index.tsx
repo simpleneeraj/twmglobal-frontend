@@ -1,16 +1,31 @@
+import React from 'react';
+import axios from 'axios';
 import Head from 'next/head';
-import Image from 'next/image';
 import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
-import useSWR from 'swr';
 
-const inter = Inter({ subsets: ['latin'] });
+type E = React.FormEvent<HTMLFormElement>;
+
+type State = {
+  name: string;
+  location: string;
+  mobile: string;
+  marks: string;
+};
 
 export default function Home() {
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const { data, error } = useSWR('/api/results/9490204927', fetcher);
+  const [contact, setContact] = React.useState('');
+  const [state, setState] = React.useState({} as State);
 
-  console.log(data);
+  const onSubmit = React.useCallback(
+    async (e: E) => {
+      e.preventDefault();
+      const { data } = await axios.get('/api/results/' + contact);
+      setState(data[0]);
+      console.log(data);
+      e.preventDefault();
+    },
+    [contact]
+  );
 
   return (
     <>
@@ -20,101 +35,110 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
+      <>
+        <title>Student Details</title>
+        <style dangerouslySetInnerHTML={{ __html: '\n    \n    ' }} />
+        <div className="mainnav">
           <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
+            <div>
+              <img
+                width="10%"
+                height="30%"
+                src="https://www.btmofficial.org/wp-content/uploads/2023/05/bible_trust_logo_final_11-1.png"
+                alt="no image"
               />
+              <h1>Bible Trust Ministries</h1>
+              <h3>producing future shepherds</h3>
+              <p />
+            </div>
+          </div>
+          <div className="nav">
+            <a className="active" href="https://www.btmofficial.org/">
+              Home
+            </a>
+            &nbsp;&nbsp;
+            <a className="active" href="https://www.btmofficial.org/about-us/">
+              About Us
+            </a>
+            &nbsp;&nbsp;
+            <a className="active" href="http://twibs.twmglobal.org/">
+              TWIBS
+            </a>
+            &nbsp;&nbsp;
+            <a className="active" href="#about">
+              Media
+            </a>
+            &nbsp;&nbsp;
+            <a className="active" href="#donate now">
+              Wings
+            </a>
+            &nbsp;&nbsp;
+            <a
+              className="active"
+              href="https://www.btmofficial.org/contact-us/"
+            >
+              Contact Us
             </a>
           </div>
         </div>
 
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <form onSubmit={onSubmit}>
+            <label htmlFor="contact">Enter Contact Number:</label>
+            <input
+              required
+              type="text"
+              id="contact"
+              name="contact"
+              onChange={(e) => setContact(e.target.value)}
+            />
+            <input type="submit" name="submit" defaultValue="Search" />
+          </form>
         </div>
+        <br />
 
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
+        {state && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              // maxWidth: '768px',
+            }}
           >
-            <h2>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+            <table
+              style={{
+                maxWidth: '768px',
+              }}
+            >
+              <tr>
+                <td>{state.name}</td>
+              </tr>
+              <tr>
+                <td>{state.location}</td>
+              </tr>
+              <tr>
+                <td>{state.mobile}</td>
+              </tr>
+              <tr>
+                <td>{state.marks}</td>
+              </tr>
+            </table>
+          </div>
+        )}
+      </>
     </>
   );
 }

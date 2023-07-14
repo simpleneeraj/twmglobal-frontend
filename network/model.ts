@@ -15,6 +15,10 @@ const resultsSchema = new Schema({
     required: true,
     unique: true,
   },
+  marks: {
+    type: String,
+    required: true,
+  },
 });
 
 const ResultsModel = model('results', resultsSchema);

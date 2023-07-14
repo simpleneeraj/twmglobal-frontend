@@ -10,7 +10,7 @@ const resultsSchema = new Schema({
     required: true,
   },
   mobile: {
-    type: String,
+    type: Number,
     required: true,
     unique: true,
   },

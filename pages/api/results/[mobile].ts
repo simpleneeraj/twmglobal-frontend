@@ -9,7 +9,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const results = await db
       .collection('results')
       .find({
-        mobile: req.query.mobile,
+        mobile: Number(req.query.mobile),
       })
       .toArray();
     res.status(200).json(results);

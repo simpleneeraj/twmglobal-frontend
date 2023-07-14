@@ -1,0 +1,70 @@
+
+
+import ResultsModel from './model';
+import { NextFunction, Request, Response } from 'express';
+
+export const getResults = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await ResultsModel.find();
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+export const getResultsByMobile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await ResultsModel.findOne({
+      mobile: req.params.mobile,
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+export const createResult = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await ResultsModel.create(req.body);
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+export const updateResult = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await ResultsModel.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+export const deleteResult = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await ResultsModel.findByIdAndDelete(req.params.id);
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
